@@ -1,0 +1,57 @@
+id: radio_telescope_ENAC_Calibration
+label: Calibration
+category: '[radio_telescope_ENAC]'
+
+templates:
+  imports: from gnuradio import radio_telescope_ENAC
+  make: radio_telescope_ENAC.Calibration(${calibration_type}, ${vec_len}, ${sample_rate})
+  callbacks:
+    - set_calibration_type(${calibration_type})
+
+
+parameters:
+  - id: calibration_type
+    label: "Calibration Type"
+    dtype: string
+    default: "Non_Calibrated"
+  #  options: ['Hot', 'Cold', 'Calibrated', 'Non_calibrated', "qt_chooser_0"]
+  #  option_label:  ['Hot', 'Cold', 'Calibrated', 'Non_calibrated', "qt_chooser_0"]
+
+  - id: vec_len
+    label: "Vector length"
+    dtype: int
+    default: 4096
+
+  - id: sample_rate
+    label: "Sampling Rate"
+    dtype: int
+    default: samp_rate
+
+
+inputs:
+  - label: Power
+    domain: stream
+    dtype: float
+    vlen: ${vec_len}
+
+outputs:
+  - label: spectrum
+    domain: stream
+    dtype: float
+    vlen: ${vec_len}
+
+  - label: Tsys
+    domain: stream
+    dtype: float
+    vlen: ${vec_len}
+    optional: true
+
+  - label: Gsys
+    domain: stream
+    dtype: float
+    vlen: ${vec_len}
+    optional: true
+
+
+
+file_format: 1

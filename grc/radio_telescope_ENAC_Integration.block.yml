@@ -1,0 +1,36 @@
+id: radio_telescope_ENAC_Integration
+label: Integration
+category: '[radio_telescope_ENAC]'
+
+templates:
+  imports: from gnuradio import radio_telescope_ENAC
+  make: radio_telescope_ENAC.Integration(${vec_len},${nb_integration})
+  callbacks:
+    - set_integration_number(${nb_integration})
+
+
+parameters:
+  - id: vec_len
+    label: "Longueur du Vecteur"
+    dtype: int
+    default: 4096
+
+  - id: nb_integration
+    label: "Nombre d'integration"
+    dtype: int
+    default: 10
+
+inputs:
+  - label: "In"
+    domain: stream
+    dtype: float
+    vlen: ${vec_len}
+
+
+outputs:
+  - label: "Out"
+    domain: stream
+    dtype: float
+    vlen: ${vec_len}
+
+file_format: 1

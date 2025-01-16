@@ -1,0 +1,32 @@
+find_package(PkgConfig)
+
+PKG_CHECK_MODULES(PC_GR_RADIO_TELESCOPE_ENAC gnuradio-radio_telescope_ENAC)
+
+FIND_PATH(
+    GR_RADIO_TELESCOPE_ENAC_INCLUDE_DIRS
+    NAMES gnuradio/radio_telescope_ENAC/api.h
+    HINTS $ENV{RADIO_TELESCOPE_ENAC_DIR}/include
+        ${PC_RADIO_TELESCOPE_ENAC_INCLUDEDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/include
+          /usr/local/include
+          /usr/include
+)
+
+FIND_LIBRARY(
+    GR_RADIO_TELESCOPE_ENAC_LIBRARIES
+    NAMES gnuradio-radio_telescope_ENAC
+    HINTS $ENV{RADIO_TELESCOPE_ENAC_DIR}/lib
+        ${PC_RADIO_TELESCOPE_ENAC_LIBDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/lib
+          ${CMAKE_INSTALL_PREFIX}/lib64
+          /usr/local/lib
+          /usr/local/lib64
+          /usr/lib
+          /usr/lib64
+          )
+
+include("${CMAKE_CURRENT_LIST_DIR}/gnuradio-radio_telescope_ENACTarget.cmake")
+
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(GR_RADIO_TELESCOPE_ENAC DEFAULT_MSG GR_RADIO_TELESCOPE_ENAC_LIBRARIES GR_RADIO_TELESCOPE_ENAC_INCLUDE_DIRS)
+MARK_AS_ADVANCED(GR_RADIO_TELESCOPE_ENAC_LIBRARIES GR_RADIO_TELESCOPE_ENAC_INCLUDE_DIRS)

@@ -1,0 +1,50 @@
+id: radio_telescope_ENAC_Save
+label: Save
+category: '[radio_telescope_ENAC]'
+
+templates:
+  imports: from gnuradio import radio_telescope_ENAC
+  make: radio_telescope_ENAC.Save(${vec_len},${azimuth},${elevation},${toggle},${samp_rate})
+  callbacks:
+    - start_stop_recording(${toggle})
+    - set_azimuth_elevation(${azimuth},${elevation})
+
+
+
+parameters:
+  - id: vec_len
+    label: "Longueur du Vecteur"
+    dtype: int
+    default: 4096
+
+  - id: azimuth
+    label: "Azimuth"
+    dtype: float
+    default: 0
+
+  - id: elevation
+    label: "Elevation"
+    dtype: float
+    default: 0
+
+  - id: toggle
+    label: "Recording"
+    dtype: bool
+    default: 0
+
+  - id: samp_rate
+    label: "Sampling Rate"
+    dtype: float
+    default: samp_rate
+
+inputs:
+  - label: "In"
+    domain: stream
+    dtype: float
+    vlen: ${vec_len}
+
+outputs:
+
+
+
+file_format: 1

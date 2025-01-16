@@ -1,0 +1,42 @@
+id: radio_telescope_ENAC_PFB
+label: PFB
+category: '[radio_telescope_ENAC]'
+
+templates:
+  imports: from gnuradio import radio_telescope_ENAC
+  make: radio_telescope_ENAC.PFB(${vec_len},${window},${num_taps})
+  callbacks:
+    - set_window_type(${window})
+
+parameters:
+  - id: vec_len
+    label: "Longueur du Vecteur"
+    dtype: int
+    default: 4096
+
+  - id: num_taps
+    label: "Nombre de sous-bande"
+    dtype: int
+    default: 8
+
+  - id: window
+    label: "Fenêtre du filtre"
+    dtype: string
+    default: "hamming"
+#    options: ["hanning","hamming","blackman_harris"]
+#    option_label: ["Hanning","Hamming","Blackman_harris"]
+
+
+inputs:
+  - label: "In"
+    dtype: complex
+    vlen: ${vec_len * num_taps}
+
+outputs:
+  - label: "Out"
+    dtype: complex
+    vlen: ${vec_len}
+
+#  'file_format' specifies the version of the GRC yml format used in the file
+#  and should usually not be changed.
+file_format: 1
