@@ -30,8 +30,8 @@ class Calibration(gr.sync_block):
                                name="Calibration",
                                in_sig=[(np.float32, vec_len)],  # Input: vector of float32
                                out_sig=[(np.float32, vec_len),  # First output port
-                                (np.float32, vec_len),  # Second output port
-                                (np.float32, vec_len)])  # Three outputs: vectors of float32
+                                        (np.float32, vec_len),  # Second output port
+                                        (np.float32, vec_len)])  # Three outputs: vectors of float32
 
         # Validate that the calibration type is supported
         assert calibration_type in ['Hot', 'Cold', 'Calibrated', 'Non_calibrated'], \
@@ -42,7 +42,6 @@ class Calibration(gr.sync_block):
         self.vec_len = vec_len
         self.sample_rate = sample_rate
 
-
         # Calibration variables
         self.Tsys = np.zeros(vec_len)  # System temperature (K)
         self.Gsys = np.ones(vec_len)  # System gain
@@ -52,15 +51,12 @@ class Calibration(gr.sync_block):
         self.hot_spectrum = np.ones(vec_len)  # Spectrum measured in "Hot" mode
         self.cold_spectrum = np.ones(vec_len)  # Spectrum measured in "Cold" mode
         self.filtered_out = np.zeros(vec_len)  # Filtered data
-        self.freq = np.fft.fftfreq(vec_len, 1/self.sample_rate)
+        self.freq = np.fft.fftfreq(vec_len, 1 / self.sample_rate)
         self.freq += 1420e9
 
     def set_calibration_type(self, calibration_type):
         self.calibration_type = calibration_type
         print(self.calibration_type)
-
-
-
 
     def work(self, input_items, output_items):
         """
@@ -82,7 +78,6 @@ class Calibration(gr.sync_block):
         KB = 1.380649e-23
         C = 3e9
         delta_f = self.sample_rate / self.vec_len
-
 
         # Copy input data for processing
         self.a = in0[0, :].copy()
@@ -113,16 +108,16 @@ class Calibration(gr.sync_block):
             self.Gsys[self.Gsys <= 0] = 1
 
         elif self.calibration_type == "Calibrated":
-            self.filtered_out0 = (self.filtered_out0 * C**2)/(2 * KB * self.freq**2) # Rayleigh-Jeans Formula
+            self.filtered_out0 = (self.filtered_out0 / self.Gsys) - self.Gsys * KB * delta_f * self.Tsys
 
 
         elif self.calibration_type == "Non_calibrated":
             # Non-calibrated mode: pass data through unchanged
-            self.filtered_out0 = (self.filtered_out0 / (KB * delta_f))
+            self.filtered_out0 = self.filtered_out0
 
         out0[:] = self.filtered_out0
-        out1 = self.Tsys  # System temperature
-        out2 = 10 * np.log10(self.Gsys)  # System gain in dB
+        out1[:] = self.Tsys  # System temperature
+        out2[:] = 10 * np.log10(self.Gsys)  # System gain in dB
         return len(output_items[0])
 
     def spike_smoothing(self):
@@ -133,9 +128,8 @@ class Calibration(gr.sync_block):
         indice_max = np.argmax(self.a)
         print(indice_max)
         # Detect spikes: threshold based on the mean of data within a specific range
-        threshold = 1.2 * np.mean(self.a[indice_max-100:indice_max+100])
+        threshold = 1.2 * np.mean(self.a[indice_max - 100:indice_max + 100])
         abovethresh_index = np.where(self.a > threshold)[0]
-
 
         # Copy input data for processing
         self.filtered_out0 = self.a[:]

@@ -48,6 +48,8 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     "/home/mathuy/gr-radio_telescope_ENAC/grc/radio_telescope_ENAC_Calibration.block.yml"
     "/home/mathuy/gr-radio_telescope_ENAC/grc/radio_telescope_ENAC_Integration.block.yml"
     "/home/mathuy/gr-radio_telescope_ENAC/grc/radio_telescope_ENAC_Save.block.yml"
+    "/home/mathuy/gr-radio_telescope_ENAC/grc/radio_telescope_ENAC_Gaussian_fit.block.yml"
+    "/home/mathuy/gr-radio_telescope_ENAC/grc/radio_telescope_ENAC_Gausian_Signal.block.yml"
     )
 endif()
 

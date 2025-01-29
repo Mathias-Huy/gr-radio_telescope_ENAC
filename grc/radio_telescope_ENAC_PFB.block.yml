@@ -30,7 +30,7 @@ parameters:
 inputs:
   - label: "In"
     dtype: complex
-    vlen: ${vec_len * num_taps}
+    vlen: ${vec_len}
 
 outputs:
   - label: "Out"

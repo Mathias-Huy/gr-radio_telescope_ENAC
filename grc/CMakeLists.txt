@@ -10,5 +10,7 @@ install(FILES
     radio_telescope_ENAC_PFB.block.yml
     radio_telescope_ENAC_Calibration.block.yml
     radio_telescope_ENAC_Integration.block.yml
-    radio_telescope_ENAC_Save.block.yml DESTINATION share/gnuradio/grc/blocks
+    radio_telescope_ENAC_Save.block.yml
+    radio_telescope_ENAC_Gaussian_fit.block.yml
+    radio_telescope_ENAC_Gausian_Signal.block.yml DESTINATION share/gnuradio/grc/blocks
 )

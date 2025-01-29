@@ -81,5 +81,3 @@ class Integration(gr.decim_block):
 
         # Return 1 because we're producing one output vector
         return 1
-
-

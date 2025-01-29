@@ -76,7 +76,7 @@ class Save(gr.sync_block):
 
         # Add the selected data (based on frequency indices) to the buffer
 
-        self.buffer.extend(in0[:,self.indx])
+        self.buffer.extend(in0[:, self.indx])
 
         # Save the data in the buffer to the file and then clear the buffer
         if self.file and not self.file.closed:

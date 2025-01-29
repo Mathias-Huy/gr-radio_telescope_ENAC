@@ -27,12 +27,13 @@ class PFB(gr.sync_block):
         self.vec_len = vec_len
         self.num_taps = num_taps
         self.band_taps = vec_len
+        self.memory = [np.zeros(self.vec_len) for _ in range(self.num_taps)]
 
         # Define block I/O
         gr.sync_block.__init__(
             self,
             name="PFB",
-            in_sig=[(np.complex64, num_taps * vec_len)],
+            in_sig=[(np.complex64, vec_len)],
             out_sig=[(np.complex64, vec_len)],
         )
 
@@ -49,8 +50,11 @@ class PFB(gr.sync_block):
         else:
             raise ValueError(f"Unsupported window type: {window}")
 
+    def switch_memory(self, data):
+        self.memory.pop()
+        self.memory.insert(0, data)
 
-    def set_window_type(self,window):
+    def set_window_type(self, window):
         """
             Change the window type.
         """
@@ -65,7 +69,6 @@ class PFB(gr.sync_block):
             self.filter = y * self.blackman_harris(len(x))
         else:
             raise ValueError(f"Unsupported window type: {window}")
-
 
     def work(self, input_items, output_items):
         """
@@ -88,12 +91,13 @@ class PFB(gr.sync_block):
         # Apply polyphase filtering
         for channel in range(num_channels):
             segment = in0[channel, :]
+            self.switch_memory(segment)
 
             for phase in range(self.num_taps):
                 start = phase * self.band_taps
                 end = (phase + 1) * self.band_taps
 
-                self.filtered_signal[channel] += segment[start:end] * self.filter[start:end]
+                self.filtered_signal[channel] += self.memory[phase] * self.filter[start:end]
 
         # Assign filtered output
         out0[:] = self.filtered_signal

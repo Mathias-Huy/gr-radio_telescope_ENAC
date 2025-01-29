@@ -24,4 +24,6 @@ from .PFB import PFB
 from .Calibration import Calibration
 from .Integration import Integration
 from .Save import Save
+from .Gaussian_fit import Gaussian_fit
+from .Gausian_Signal import Gausian_Signal
 #

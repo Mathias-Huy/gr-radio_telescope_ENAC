@@ -25,7 +25,9 @@ GR_PYTHON_INSTALL(
     PFB.py
     Calibration.py
     Integration.py
-    Save.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/radio_telescope_ENAC
+    Save.py
+    Gaussian_fit.py
+    Gausian_Signal.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/radio_telescope_ENAC
 )
 
 ########################################################################
@@ -46,3 +48,5 @@ GR_ADD_TEST(qa_PFB ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_PFB.py)
 GR_ADD_TEST(qa_Calibration ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_Calibration.py)
 GR_ADD_TEST(qa_Integration ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_Integration.py)
 GR_ADD_TEST(qa_Save ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_Save.py)
+GR_ADD_TEST(qa_Gaussian_fit ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_Gaussian_fit.py)
+GR_ADD_TEST(qa_Gausian_Signal ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_Gausian_Signal.py)
