@@ -1,0 +1,33 @@
+id: radio_telescope_ENAC_Gaussian_fit
+label: Gaussian_fit
+category: '[radio_telescope_ENAC]'
+
+templates:
+  imports: from gnuradio import radio_telescope_ENAC
+  make: radio_telescope_ENAC.Gaussian_fit(${vec_len})
+
+
+parameters:
+  - id: vec_len
+    label: "Vector length"
+    dtype: int
+    default: 4096
+
+
+inputs:
+  - label: "In"
+    domain: stream
+    dtype: float
+    vlen: ${vec_len}
+
+outputs:
+  - label: x0 (Peak Position)
+    domain: stream
+    dtype: float
+    vlen: 1
+  - label: sigma^2 (Variance)
+    domain: stream
+    dtype: float
+    vlen: 1
+
+file_format: 1

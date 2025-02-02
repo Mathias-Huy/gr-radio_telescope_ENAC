@@ -1,0 +1,50 @@
+id: radio_telescope_ENAC_Gausian_Signal
+label: Gausian_Signal
+category: '[radio_telescope_ENAC]'
+
+templates:
+  imports: from gnuradio import radio_telescope_ENAC
+  make: radio_telescope_ENAC.Gausian_Signal(${carrier_frequency}, ${sigma2}, ${samp_rate}, ${amplitude})
+  callbacks:
+    - set_sigma2(${sigma2})
+    - set_amplitude(${amplitude})
+    - set_carrier_frequency(${carrier_frequency})
+#  Make one 'parameters' list entry for every parameter you want settable from the GUI.
+#     Keys include:
+#     * id (makes the value accessible as keyname, e.g. in the make entry)
+#     * label (label shown in the GUI)
+#     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
+#     * default
+parameters:
+  - id: carrier_frequency
+    label: "Carrier Frequency"
+    dtype: float
+    default: 1000
+
+  - id: sigma2
+    label: "Variance of the Gaussain Law"
+    dtype: float
+    default: 0.1
+
+  - id: samp_rate
+    label: "Sample Rate"
+    dtype: float
+    default: samp_rate
+
+  - id: amplitude
+    label: "Amplitude"
+    dtype: float
+    default: 1
+
+
+
+inputs:
+
+
+outputs:
+  - label: "Out"
+    dtype: complex
+
+
+
+file_format: 1
