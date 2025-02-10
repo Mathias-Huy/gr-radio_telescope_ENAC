@@ -50,7 +50,7 @@ class Calibration(gr.sync_block):
         self.cold_spectrum = np.ones(vec_len)  # Spectrum measured in "Cold" mode
         self.filtered_out = np.zeros(vec_len)  # Filtered data
         self.freq = np.fft.fftfreq(vec_len, 1 / self.sample_rate)  # Frequency axis
-        self.freq += 1420e9  # Shift frequencies by 1.42 THz
+        self.freq += 1420e6  # Shift frequencies by 1.42 GHz
 
     def set_calibration_type(self, calibration_type):
         """ Updates the calibration type. """
@@ -83,7 +83,7 @@ class Calibration(gr.sync_block):
         self.filtered_out0 = self.a[:]
 
         # Smooth spikes in the input data (optional)
-        # self.spike_smoothing()
+        self.spike_smoothing()
 
         # Process data based on calibration type
         if self.calibration_type == "Hot":
@@ -131,16 +131,18 @@ class Calibration(gr.sync_block):
         Smooths spikes in the input data.
         Detects extreme values and replaces them with the median of neighboring points.
         """
-        indice_max = np.argmax(self.a)  # Index of the maximum value
-        print(indice_max)
+        #indice_max = np.argmax(self.a)  # Index of the maximum value
 
         # Define a threshold based on local mean intensity
-        threshold = 1.2 * np.mean(self.a[indice_max - 100:indice_max + 100])
-        abovethresh_index = np.where(self.a > threshold)[0]  # Indices of spikes
+        threshold = 1.2*np.mean(self.a[2541:2786])
+        abovethresh_index = np.where(self.a > threshold)[0]
+        #print(abovethresh_index)
+        # Indices of spikes
 
         # Copy input data for processing
         self.filtered_out0 = self.a[:]
-        print(f'Size of filtered_out0: {self.filtered_out0.shape}')
+        #print(self.filtered_out0.shape)
+
 
         # Replace spikes with median values from neighboring points
         for index in abovethresh_index:
@@ -148,9 +150,7 @@ class Calibration(gr.sync_block):
             upperbound = min(index + 10, self.vec_len)  # Upper limit
 
             # Replace the spike with the median of the surrounding values
-            self.filtered_out0[abovethresh_index[index]] = np.median(self.a[lowerbound:upperbound])
+            self.filtered_out0[index] = np.median(self.a[lowerbound:upperbound])
 
             # Debugging output
-            print(f'Index: {abovethresh_index[index]}')
-            print(f'Lower bound: {lowerbound}')
-            print(f'Upper bound: {upperbound}')
+
